@@ -1,0 +1,99 @@
+/**
+ * 
+ */
+package game.tictactoe;
+
+/**
+ * This class implements methods that deal with the result of the game win,lose or draw
+ * 
+ * @author Harshita Rao
+ * 
+ */
+public class EvaluateGame {
+	
+ 	/**
+ 	 * @param board object
+ 	 * @param user's symbol
+ 	 * @param computer's symbol
+ 	 * @return int value 1,2 or 3
+ 	 */
+ 	int checkForWinner(Board b, char h, char c) 
+ 	{
+		char[] board = b.getmBoard();
+	
+	 // Check for horizontal win combinations
+	 for (int i = 0; i <= 6; i += 3) {
+         
+          if (evaluationHelper(board, i, i+1, i+2, h))
+              return 2;
+          if (evaluationHelper(board, i, i+1, i+2, c))
+              return 3;
+      }
+		
+	 // Check for vertical win combinations
+	 for (int i = 0; i <= 2; i ++) {
+	         
+	      if (evaluationHelper(board, i, i+3, i+6, h))
+	          return 2;
+	      if (evaluationHelper(board, i, i+3, i+6, c))
+	          return 3;
+	   }
+	
+	 // Check for diagonals
+	 int i=0;	
+	 if(evaluationHelper(board,i,i+4,i+8,h) ||
+			 evaluationHelper(board,i+2,i+4,i+6,h))
+		 return 2;
+	 
+	 if(evaluationHelper(board,i,i+4,i+8,c) ||
+			 evaluationHelper(board,i+2,i+4,i+6,c))
+		 return 3;
+			
+	 // Check for a tie
+	 for (int j = 0; j < b.getBoard_size(); j++) {
+			// If we find a number, then no one has won yet
+			if (board[j] != h && board[j] != c)
+				return 0;
+		}
+	
+		 /* If we make it through the previous loop, all spaces on the board 
+	     are occupied. So it's obviously a tie */
+		 return 1;
+	}
+ 	
+    /**
+     * @param arr- character array of the board
+     * @param i - index 
+     * @param j - index
+     * @param k - index
+     * @param player - character symbol
+     * @return boolean value to checkForWinner
+     */
+    private boolean evaluationHelper(char []arr, int i, int j, int k, char player)
+    {
+	        if( arr[i]== player &&
+	                arr[j] == player &&
+	                arr[k] == player) {
+	            return true;
+	        }
+	        return false;
+	}
+ 	/**
+ 	 * @param result 1,2 or 3
+ 	 * @param p1 human player object
+ 	 * @param p2 computer player object
+ 	 */
+ 	public void reportGameResult(int result,HumanPlayer p1,ComputerPlayer p2)
+ 	{ 		
+ 		
+ 		if (result == 1)
+			System.out.println("It's a draw.");
+		else if (result == 2)
+			System.out.println(p1.getSymbol() + " wins! Congrats "+p1.getName()+"!");
+		else if (result == 3)
+			System.out.println(p2.getSymbol() + " wins! "+p2.getName()+" is the winner!");
+		else
+			System.out.println("Error!!");	
+ 	}
+ 	
+}
